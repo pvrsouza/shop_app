@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../screens/product_detail_screen.dart';
+import '../providers/product.dart';
 
 class ProductItem extends StatelessWidget {
-  final String id;
+  /* final String id;
   final String title;
   final String imageUrl;
 
@@ -12,9 +14,11 @@ class ProductItem extends StatelessWidget {
     @required this.title,
     @required this.imageUrl,
   });
-
+ */
   @override
   Widget build(BuildContext context) {
+    final product = Provider.of<Product>(context);
+
     ///Como o GridTile não tem como controlar BorderRaduis, podemos usar o ClipRRect para isso
     return ClipRRect(
       borderRadius: BorderRadius.circular(10),
@@ -23,11 +27,11 @@ class ProductItem extends StatelessWidget {
           onTap: () {
             Navigator.of(context).pushNamed(
               ProductDetailScreen.routeName,
-              arguments: id,
+              arguments: product.id,
             );
           },
           child: Image.network(
-            imageUrl,
+            product.imageUrl,
             fit: BoxFit.cover,
           ),
         ),
@@ -35,9 +39,11 @@ class ProductItem extends StatelessWidget {
           backgroundColor: Colors.black87,
           leading: IconButton(
             onPressed: () {
-              print('favorite clicked');
+              product.toogleFavorite();
             },
-            icon: Icon(Icons.favorite),
+            icon: Icon(
+              product.isFavorite ? Icons.favorite : Icons.favorite_border,
+            ),
             color: Theme.of(context).accentColor,
           ),
           trailing: IconButton(
@@ -48,7 +54,7 @@ class ProductItem extends StatelessWidget {
             color: Theme.of(context).accentColor,
           ),
           title: Text(
-            title,
+            product.title,
             textAlign: TextAlign.center,
           ),
         ),
