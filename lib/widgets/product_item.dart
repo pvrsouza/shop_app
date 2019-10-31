@@ -17,7 +17,11 @@ class ProductItem extends StatelessWidget {
  */
   @override
   Widget build(BuildContext context) {
-    final product = Provider.of<Product>(context);
+    /**
+     * pega o valor só uma vez e não forca o rebuild de todo o Widget.
+     * vamos implementar um Consumer onde sabemos que é o único valor que muda no Product.
+     */
+    final product = Provider.of<Product>(context, listen: false);
 
     ///Como o GridTile não tem como controlar BorderRaduis, podemos usar o ClipRRect para isso
     return ClipRRect(
@@ -37,14 +41,19 @@ class ProductItem extends StatelessWidget {
         ),
         footer: GridTileBar(
           backgroundColor: Colors.black87,
-          leading: IconButton(
-            onPressed: () {
-              product.toogleFavorite();
-            },
-            icon: Icon(
-              product.isFavorite ? Icons.favorite : Icons.favorite_border,
+
+          ///Aqui usamos o Consumer porque garantimos que só esse trecho será atualizado
+          ///quando o listner perceber alterações.
+          leading: Consumer<Product>(
+            builder: (ctx, product, child) => IconButton(
+              onPressed: () {
+                product.toogleFavorite();
+              },
+              icon: Icon(
+                product.isFavorite ? Icons.favorite : Icons.favorite_border,
+              ),
+              color: Theme.of(context).accentColor,
             ),
-            color: Theme.of(context).accentColor,
           ),
           trailing: IconButton(
             onPressed: () {
