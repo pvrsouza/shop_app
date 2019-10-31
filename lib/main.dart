@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shop_app/providers/product.dart';
 
 import './screens/product_detail_screen.dart';
 import './screens/products_overwiew_screen.dart';
@@ -16,9 +17,12 @@ class MyApp extends StatelessWidget {
      * Caso o Provider ( Products ) dependa do contexto, temos que usar o 'builder'
      * caso contrario é possível usar só o construtor .value
      */
-    return ChangeNotifierProvider.value(
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider<Products>.value(value: Products()),
+      ],
       //Registra o provider
-      value: Products(),
+      //value: Products(),
       child: MaterialApp(
         title: 'MyShop',
         theme: ThemeData(
