@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../screens/product_detail_screen.dart';
+
 import '../providers/product.dart';
+import '../providers/cart.dart';
 
 class ProductItem extends StatelessWidget {
   /* final String id;
@@ -22,6 +24,7 @@ class ProductItem extends StatelessWidget {
      * vamos implementar um Consumer onde sabemos que é o único valor que muda no Product.
      */
     final product = Provider.of<Product>(context, listen: false);
+    final cart = Provider.of<Cart>(context, listen: false);
 
     ///Como o GridTile não tem como controlar BorderRaduis, podemos usar o ClipRRect para isso
     return ClipRRect(
@@ -57,7 +60,7 @@ class ProductItem extends StatelessWidget {
           ),
           trailing: IconButton(
             onPressed: () {
-              print('shoppingCart clicked');
+              cart.addItem(product.id, product.title, product.price);
             },
             icon: Icon(Icons.shopping_cart),
             color: Theme.of(context).accentColor,
