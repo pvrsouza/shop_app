@@ -4,9 +4,11 @@ import 'package:provider/provider.dart';
 import './screens/product_detail_screen.dart';
 import './screens/products_overwiew_screen.dart';
 import './screens/cart_screen.dart';
+import './screens/orders_screen.dart';
 
 import './providers/products.dart';
 import './providers/cart.dart';
+import './providers/orders.dart';
 
 void main() => runApp(MyApp());
 
@@ -25,7 +27,10 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider<Cart>.value(
           value: Cart(),
-        )
+        ),
+        ChangeNotifierProvider<Orders>.value(
+          value: Orders(),
+        ),
       ],
       //Registra o provider
       //value: Products(),
@@ -42,6 +47,7 @@ class MyApp extends StatelessWidget {
           "/": (ctx) => ProductsOverviewScreen(),
           ProductDetailScreen.routeName: (ctx) => ProductDetailScreen(),
           CartScreen.routeName: (ctx) => CartScreen(),
+          OrderScreen.routeName: (ctx) => OrderScreen(),
         },
       ),
     );

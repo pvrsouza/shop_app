@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 
 import './product.dart';
-/**
- * O mixin é uma especie de herança, porem não retorna a nossa class como
- * uma classe da heranca. Ele simplesmente faz merge de alguma proriedades ou 
- * adciona alguns métodos na nossa classe.
- */
+
+///O mixin é uma especie de herança, porem não retorna a nossa class como
+///uma classe da heranca. Ele simplesmente faz merge de alguma proriedades ou
+///adciona alguns métodos na nossa classe.
 
 class Products with ChangeNotifier {
   List<Product> _items = [
@@ -43,11 +42,10 @@ class Products with ChangeNotifier {
     ),
   ];
 
-  /**
-   * Tem que retornar uma cópia do objeto ( usando o SpreadOperator )
-   * para que não seja retornado a referencia do objeto original e desas forma ele ser alterado 
-   * sem controle.
-   */
+  /// Tem que retornar uma cópia do objeto ( usando o SpreadOperator )
+  /// para que não seja retornado a referencia do objeto original e desas forma ele ser alterado
+  /// sem controle.
+
   List<Product> get items {
     return [..._items];
   }

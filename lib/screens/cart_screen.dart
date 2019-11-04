@@ -4,7 +4,9 @@ import 'package:provider/provider.dart';
 ///Dentro de cart.dart tem uma classe CartItem que conflita com o widgets/cart_item.dart
 ///Usamos o 'show' para informar ao Dart que só precisamos do Cart e não do CartItem
 import '../providers/cart.dart' show Cart;
+import '../providers/orders.dart';
 import '../widgets/cart_item.dart';
+import '../screens/orders_screen.dart';
 
 class CartScreen extends StatelessWidget {
   static String routeName = '/cart';
@@ -12,6 +14,7 @@ class CartScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final cartProvider = Provider.of<Cart>(context);
+    final orderProvider = Provider.of<Orders>(context, listen: false);
 
     return Scaffold(
       appBar: AppBar(
@@ -44,7 +47,15 @@ class CartScreen extends StatelessWidget {
                   ),
                   FlatButton(
                     child: Text('ORDER NOW'),
-                    onPressed: () {},
+                    onPressed: () {
+                      orderProvider.addOrder(cartProvider.items.values.toList(),
+                          cartProvider.totalAmount);
+
+                      cartProvider.clear();
+
+                      Navigator.of(context)
+                          .pushReplacementNamed(OrderScreen.routeName);
+                    },
                     textColor: Theme.of(context).primaryColor,
                   ),
                 ],

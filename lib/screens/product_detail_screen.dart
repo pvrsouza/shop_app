@@ -52,7 +52,6 @@ class ProductDetailScreen extends StatelessWidget {
               height: 10,
             ),
             Container(
-              color: Colors.red,
               padding: EdgeInsets.symmetric(
                 horizontal: 15,
               ),
