@@ -62,6 +62,9 @@ class ProductItem extends StatelessWidget {
             onPressed: () {
               cart.addItem(product.id, product.title, product.price);
 
+              ///limpa os snackbar antes de exibir um novo
+              Scaffold.of(context).hideCurrentSnackBar();
+
               ///O Scaffold.of(context) tenta encontrar na arvore de widget o Scaffold mais próximo para conseguir
               ///interagir como ele e exibir as coisas
               Scaffold.of(context).showSnackBar(
