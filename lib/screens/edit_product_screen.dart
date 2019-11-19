@@ -10,17 +10,36 @@ class _EditProductScreenState extends State<EditProductScreen> {
   final _priceFocusNode = FocusNode();
   final _descriptionFocusNode = FocusNode();
   final _imageUrlController = TextEditingController();
+  final _imageUrlFocusNode = FocusNode();
 
   @override
   void dispose() {
     _priceFocusNode.dispose();
     _descriptionFocusNode.dispose();
     _imageUrlController.dispose();
+
+    _imageUrlFocusNode.dispose();
+    _imageUrlFocusNode.removeListener(_updateImageUrl);
     super.dispose();
   }
 
   @override
+  void initState() {
+    //para conseguir disparar a mudanca da imagem quando tirar o foco do ImageUrl
+    _imageUrlFocusNode.addListener(_updateImageUrl);
+    super.initState();
+  }
+
+  void _updateImageUrl() {
+    print('updateImage');
+    if (!_imageUrlFocusNode.hasFocus) {
+      setState(() {});
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
+    print('Edit product');
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -65,6 +84,8 @@ class _EditProductScreenState extends State<EditProductScreen> {
                 focusNode: _descriptionFocusNode,
               ),
               Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.end,
                 children: <Widget>[
                   Container(
                     width: 100,
@@ -82,15 +103,19 @@ class _EditProductScreenState extends State<EditProductScreen> {
                     child: _imageUrlController.text.isEmpty
                         ? Text('Enter a URL')
                         : FittedBox(
-                          fit: BoxFit.cover,
+                            fit: BoxFit.cover,
                             child: Image.network(_imageUrlController.text),
                           ),
                   ),
-                  TextFormField(
-                    decoration: InputDecoration(labelText: 'Image'),
-                    keyboardType: TextInputType.url,
-                    textInputAction: TextInputAction.done,
-                    controller: _imageUrlController,
+                  Expanded(
+                    child: TextFormField(
+                      decoration: InputDecoration(labelText: 'Image'),
+                      keyboardType: TextInputType.url,
+                      textInputAction: TextInputAction.done,
+                      controller: _imageUrlController,
+                      focusNode: _imageUrlFocusNode,
+                      //initialValue: 'teste',
+                    ),
                   ),
                 ],
               )
