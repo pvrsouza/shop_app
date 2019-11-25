@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../providers/product.dart';
+
 class EditProductScreen extends StatefulWidget {
   static final routeName = '/edit-product';
   @override
@@ -11,6 +13,16 @@ class _EditProductScreenState extends State<EditProductScreen> {
   final _descriptionFocusNode = FocusNode();
   final _imageUrlController = TextEditingController();
   final _imageUrlFocusNode = FocusNode();
+  final _formState = GlobalKey<FormState>();
+
+  Product _product = new Product(
+    id: null,
+    description: '',
+    title: '',
+    imageUrl: '',
+    price: 0,
+    isFavorite: false,
+  );
 
   @override
   void dispose() {
@@ -37,6 +49,14 @@ class _EditProductScreenState extends State<EditProductScreen> {
     }
   }
 
+  void _saveForm() {
+    _formState.currentState.save();
+    print(_product.title);
+    print(_product.price);
+    print(_product.description);
+    print(_product.imageUrl);
+  }
+
   @override
   Widget build(BuildContext context) {
     print('Edit product');
@@ -45,10 +65,18 @@ class _EditProductScreenState extends State<EditProductScreen> {
         title: Text(
           'Edit Product',
         ),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.save),
+            onPressed: _saveForm,
+          ),
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Form(
+          key: _formState,
+
           ///O ideal seria usar um Column com SingleChildScrollView porque o ListView não garante o estado dos campos quando muda a orientação.
           child: ListView(
             children: <Widget>[
@@ -63,6 +91,17 @@ class _EditProductScreenState extends State<EditProductScreen> {
                 onFieldSubmitted: (value) {
                   FocusScope.of(context).requestFocus(_priceFocusNode);
                 },
+                onSaved: (value) {
+                  _product.title = value;
+                  /* _product = Product(
+                    title: value,
+                    price: _product.price,
+                    description: _product.description,
+                    id: null,
+                    imageUrl: _product.imageUrl,
+                    isFavorite: _product.isFavorite,
+                  ); */
+                },
               ),
               TextFormField(
                 decoration: InputDecoration(
@@ -74,6 +113,17 @@ class _EditProductScreenState extends State<EditProductScreen> {
                 },
                 keyboardType: TextInputType.number,
                 focusNode: _priceFocusNode,
+                onSaved: (value) {
+                  _product.price = double.parse(value);
+                  /* _product = Product(
+                    title: _product.title,
+                    price: double.parse(value),
+                    description: _product.description,
+                    id: null,
+                    imageUrl: _product.imageUrl,
+                    isFavorite: _product.isFavorite,
+                  ); */
+                },
               ),
               TextFormField(
                 decoration: InputDecoration(
@@ -82,6 +132,17 @@ class _EditProductScreenState extends State<EditProductScreen> {
                 maxLines: 3,
                 keyboardType: TextInputType.multiline,
                 focusNode: _descriptionFocusNode,
+                onSaved: (value) {
+                  _product.description = value;
+                  /* _product = Product(
+                    title: _product.title,
+                    price: _product.price,
+                    description: value,
+                    id: null,
+                    imageUrl: _product.imageUrl,
+                    isFavorite: _product.isFavorite,
+                  ); */
+                },
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -114,6 +175,20 @@ class _EditProductScreenState extends State<EditProductScreen> {
                       textInputAction: TextInputAction.done,
                       controller: _imageUrlController,
                       focusNode: _imageUrlFocusNode,
+                      onFieldSubmitted: (_) {
+                        _saveForm();
+                      },
+                      onSaved: (value) {
+                        _product.imageUrl = value;
+                        /* _product = Product(
+                          title: _product.title,
+                          price: _product.price,
+                          description: _product.description,
+                          id: null,
+                          imageUrl: value,
+                          isFavorite: _product.isFavorite,
+                        ); */
+                      },
                       //initialValue: 'teste',
                     ),
                   ),
