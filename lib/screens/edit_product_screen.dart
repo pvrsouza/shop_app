@@ -92,6 +92,8 @@ class _EditProductScreenState extends State<EditProductScreen> {
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Form(
+          ///O auto validate não funciona no OnBlur
+          //autovalidate: true,
           key: _formState,
 
           ///O ideal seria usar um Column com SingleChildScrollView porque o ListView não garante o estado dos campos quando muda a orientação.
