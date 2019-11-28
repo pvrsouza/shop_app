@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../providers/product.dart';
+import '../providers/products.dart';
 
 class EditProductScreen extends StatefulWidget {
   static final routeName = '/edit-product';
@@ -15,6 +17,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
   final _imageUrlFocusNode = FocusNode();
   final _formState = GlobalKey<FormState>();
 
+  /* Exemplo de URL: https://odcspress.org/wp-content/uploads/2017/01/Stack-Books-Copy.jpg */
   Product _product = new Product(
     id: null,
     description: '',
@@ -76,6 +79,9 @@ class _EditProductScreenState extends State<EditProductScreen> {
     print(_product.price);
     print(_product.description);
     print(_product.imageUrl); */
+
+    Provider.of<Products>(context, listen: false).addProduct(_product);
+    Navigator.of(context).pop();
   }
 
   @override
