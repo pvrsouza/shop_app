@@ -50,13 +50,17 @@ class _EditProductScreenState extends State<EditProductScreen> {
   }
 
   bool _validateUrl(value) {
-    final validProtocol = value.startsWith('http') || value.startsWith('https');
+    /* final validProtocol = value.startsWith('http') || value.startsWith('https');
 
     final validExtension = value.endsWith('.png') ||
         value.endsWith('.jpg') ||
         value.endsWith('.jpeg');
+    return validExtension && validProtocol; */
 
-    return validExtension && validProtocol;
+    var urlPattern =
+        r"(https?|ftp)://([-A-Z0-9.]+)(/[-A-Z0-9+&@#/%=~_|!:,.;]*)?(\?[A-Z0-9+&@#/%=~_|!:‌​,.;]*)?";
+    var result = new RegExp(urlPattern, caseSensitive: false).firstMatch(value);
+    return result != null;
   }
 
   void _saveForm() {
