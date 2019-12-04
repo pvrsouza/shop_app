@@ -17,6 +17,8 @@ class _EditProductScreenState extends State<EditProductScreen> {
   final _imageUrlFocusNode = FocusNode();
   final _formState = GlobalKey<FormState>();
 
+  bool _isInit = true;
+
   /* Exemplo de URL: https://odcspress.org/wp-content/uploads/2017/01/Stack-Books-Copy.jpg */
   Product _product = new Product(
     id: null,
@@ -26,6 +28,13 @@ class _EditProductScreenState extends State<EditProductScreen> {
     price: 0,
     isFavorite: false,
   );
+
+  var _initValues = {
+    'title': '',
+    'description': '',
+    'price': '',
+    'imageUrl': '',
+  };
 
   @override
   void dispose() {
@@ -42,7 +51,32 @@ class _EditProductScreenState extends State<EditProductScreen> {
   void initState() {
     //para conseguir disparar a mudanca da imagem quando tirar o foco do ImageUrl
     _imageUrlFocusNode.addListener(_updateImageUrl);
+
     super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    if (_isInit) {
+      final productId = ModalRoute.of(context).settings.arguments as String;
+      if (productId != null) {
+        _product =
+            Provider.of<Products>(context, listen: false).findById(productId);
+
+        _initValues = {
+          'title': _product.title,
+          'description': _product.description,
+          'price': _product.price.toString(),
+          //'imageUrl': _product.imageUrl,
+          'imageUrl': '',
+        };
+
+        _imageUrlController.text = _product.imageUrl;
+      }
+    }
+
+    _isInit = false;
+    super.didChangeDependencies();
   }
 
   void _updateImageUrl() {
@@ -110,6 +144,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
           child: ListView(
             children: <Widget>[
               TextFormField(
+                initialValue: _initValues['title'],
                 decoration: InputDecoration(
                   labelText: 'Title',
                 ),
@@ -141,6 +176,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                 },
               ),
               TextFormField(
+                initialValue: _initValues['price'],
                 decoration: InputDecoration(
                   labelText: 'Price',
                 ),
@@ -178,6 +214,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                 },
               ),
               TextFormField(
+                initialValue: _initValues['description'],
                 decoration: InputDecoration(
                   labelText: 'Description',
                 ),
@@ -232,6 +269,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                   ),
                   Expanded(
                     child: TextFormField(
+                      // initialValue: _initValues['imageUrl'],
                       decoration: InputDecoration(labelText: 'Image'),
                       keyboardType: TextInputType.url,
                       textInputAction: TextInputAction.done,
