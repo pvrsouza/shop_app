@@ -113,8 +113,12 @@ class _EditProductScreenState extends State<EditProductScreen> {
     print(_product.price);
     print(_product.description);
     print(_product.imageUrl); */
-
-    Provider.of<Products>(context, listen: false).addProduct(_product);
+    if (_product.id != null) {
+      Provider.of<Products>(context, listen: false)
+          .updateProduct(_product.id, _product);
+    } else {
+      Provider.of<Products>(context, listen: false).addProduct(_product);
+    }
     Navigator.of(context).pop();
   }
 
