@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../screens/edit_product_screen.dart';
 import '../providers/products.dart';
+import '../providers/cart.dart';
 
 class UserProductItem extends StatelessWidget {
   final String id;
@@ -42,6 +43,8 @@ class UserProductItem extends StatelessWidget {
               ),
               onPressed: () {
                 Provider.of<Products>(context, listen: false).removeProduct(id);
+                Provider.of<Cart>(context, listen: false)
+                    .removeAllProductsItems(id);
               },
             ),
           ],
