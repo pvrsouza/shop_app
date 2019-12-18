@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:http/http.dart' as http;
 
 import '../providers/product.dart';
 import '../providers/products.dart';
@@ -16,6 +17,9 @@ class _EditProductScreenState extends State<EditProductScreen> {
   final _imageUrlController = TextEditingController();
   final _imageUrlFocusNode = FocusNode();
   final _formState = GlobalKey<FormState>();
+
+  final url = 'https://flutter-shop-app-b4ac1.firebaseio.com/';
+
 
   bool _isInit = true;
 
