@@ -64,7 +64,8 @@ class Products with ChangeNotifier {
   }
 
   void addProduct(Product product) {
-    http.post(
+    http
+        .post(
       _url + "products.json",
       body: json.encode(
         {
@@ -76,22 +77,25 @@ class Products with ChangeNotifier {
           'price': product.price,
         },
       ),
-    );
+    )
+        .then((response) {
+      print(json.decode(response.body));
+      var id = json.decode(response.body)['name'];
+      //...
+      final newProduct = new Product(
+        id: id,
+        title: product.title,
+        description: product.description,
+        imageUrl: product.imageUrl,
+        price: product.price,
+        isFavorite: product.isFavorite,
+      );
 
-    //...
-    final newProduct = new Product(
-      id: DateTime.now().toString(),
-      title: product.title,
-      description: product.description,
-      imageUrl: product.imageUrl,
-      price: product.price,
-      isFavorite: product.isFavorite,
-    );
-
-    _items.add(newProduct);
-    //se quiser incluir no inicio da lista
-    //_items.insert(0, newProduct);
-    notifyListeners();
+      _items.add(newProduct);
+      //se quiser incluir no inicio da lista
+      //_items.insert(0, newProduct);
+      notifyListeners();
+    });
   }
 
   void updateProduct(String id, Product newProduct) {
